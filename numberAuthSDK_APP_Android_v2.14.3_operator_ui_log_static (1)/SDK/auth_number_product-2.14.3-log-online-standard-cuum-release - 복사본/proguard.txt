@@ -1,0 +1,25 @@
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,*Annotation*,EnclosingMethod
+-keep class cn.com.chinatelecom.** {*;}
+-keep class com.cmic.sso.sdk.** {*;}
+-keep class com.mobile.auth.** {*;}
+-keep class com.nirvana.** {*;}
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-dontwarn com.mobile.auth.**
+-dontwarn com.cmic.sso.sdk.utils.**
+-dontwarn com.nirvana.**
+-keep class * implements com.nirvana.tools.jsoner.Jsoner {*;}
+-keep class  com.alicom.tools.serialization.* {*;}
+-keep class  com.alicom.tools.networking.* {*;}
+-keep class * implements com.alicom.tools.serialization.JSONer {*;}
+
+-dontwarn com.unicom.online.account.kernel.**
+-keep class com.unicom.online.account.shield.** {*;}
+
+-dontwarn com.unicom.online.account.kernel.**
+-keep class com.unicom.online.account.shield.** {*;}
+
+
+-dontwarn com.unicom.online.account.kernel.**
+-keep class com.unicom.online.account.shield.** {*;}
