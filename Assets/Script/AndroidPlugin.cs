@@ -11,15 +11,5 @@ public class AndroidPlugin : MonoBehaviour
         }
     }
 
-    public void CallJavaMethod()
-    {
-        using (AndroidJavaClass myClass = new AndroidJavaClass("com.example.MyJavaClass"))
-        {
-            using (AndroidJavaObject myObject = myClass.CallStatic<AndroidJavaObject>("getInstance"))
-            {
-                int value = myObject.Call<int>("getIntValue");
-                Debug.Log("Integer value from Java: " + value);
-            }
-        }
-    }
+    
 }
