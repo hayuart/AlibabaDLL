@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mobile.auth">
+
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+<application
+    android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/AppTheme"
+tools:replace="android:icon">
+
+<activity
+    android:name=".numberauth.FusionNumberAuthActivity"
+    android:exported="false"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="behind"
+    android:theme="@style/NumberAuthTheme" />
+
+<activity
+    android:name=".smsauth.FusionSmsActivity"
+    android:exported="false"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="behind" />
+
+<activity
+    android:name=".graphauth.FusionGraphAuthActivity"
+    android:exported="false"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="behind" />
+
+<activity
+    android:name=".upsms.AlicomFusionUpSmsActivity"
+    android:exported="false"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="behind" />
+
+<activity
+    android:name="com.mobile.auth.gatewayauth.LoginAuthActivity"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:exported="false"
+    android:launchMode="singleTop"
+    android:screenOrientation="behind"
+    android:theme="@style/authsdk_activity_dialog" />
+
+<activity
+    android:name="com.mobile.auth.gatewayauth.PrivacyDialogActivity"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:exported="false"
+    android:launchMode="singleTop"
+    android:screenOrientation="behind"
+    android:theme="@style/authsdk_activity_dialog" />
+
+<activity
+    android:name="com.alicom.fusion.demo.CustomWebViewActivity"
+    android:configChanges="orientation|keyboardHidden|screenSize|uiMode|fontScale"
+    android:screenOrientation="sensorPortrait">
+    <intent-filter>
+        <action android:name="com.fusion.auth"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+    </intent-filter>
+</activity>
+
+</application>
+
+    </manifest>
