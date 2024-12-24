@@ -2,40 +2,45 @@
 
 public class AliyunProcess : MonoBehaviour
 {
-    private AndroidJavaObject authHelper;
+    private AndroidJavaObject phoneNumberAuthHelper;
+    private string accessKeyId;
+    private string accessKeySecret;
+    //[SerializeField] private string templateCode = "SMS_139870006";
+    //[SerializeField] private string signName = "alibabatest";
 
-    void Start()
+    private void Start()
     {
-        // Unity의 Main Activity 가져오기
-        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject unityActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        try
+        {
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-        // PhoneNumberAuthHelper 인스턴스 생성
-        AndroidJavaClass phoneAuthHelperClass = new AndroidJavaClass("com.aliyun.phone.PhoneNumberAuthHelper");
-        authHelper = phoneAuthHelperClass.CallStatic<AndroidJavaObject>("getInstance", unityActivity, new TokenResultListener());
+            phoneNumberAuthHelper = new AndroidJavaObject(
+                "com.mobile.auth.gatewayauth.PhoneNumberAuthHelper",
+                currentActivity,
+                new TokenResultListener()
+            );
 
-        // SDK 설정
-        string secretInfo = "사용자 비밀 키";
-        authHelper.Call("setAuthSDKInfo", secretInfo);
-        authHelper.Call("checkEnvAvailable", 1); // 1은 PhoneNumberAuthHelper.SERVICE_TYPE_LOGIN 상수
+            var reporter = phoneNumberAuthHelper.Call<AndroidJavaObject>("getReporter");
+            if (reporter != null)
+            {
+                reporter.Call("setLoggerEnable", true);
+                Debug.Log("Logger enabled successfully.");
+            }
+            else
+            {
+                Debug.LogError("Reporter object is null.");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error initializing PhoneNumberAuthHelper: " + ex.Message);
+        }
     }
 
-    public void AccelerateLoginPage(int timeout)
-    {
-        // 로그인 페이지 가속
-        authHelper.Call("accelerateLoginPage", timeout, new PreLoginResultListener());
-    }
-
-    public void ShowLoginPage(int timeout)
-    {
-        // 로그인 페이지 표시 및 Token 요청
-        authHelper.Call("getLoginToken", new TokenResultListener(), timeout);
-    }
-
-    // Java의 TokenResultListener 구현
     private class TokenResultListener : AndroidJavaProxy
     {
-        public TokenResultListener() : base("com.aliyun.phone.TokenResultListener") { }
+        public TokenResultListener() : base("com.mobile.auth.gatewayauth.TokenResultListener") { }
 
         public void onTokenSuccess(string token)
         {
@@ -45,22 +50,6 @@ public class AliyunProcess : MonoBehaviour
         public void onTokenFailed(string error)
         {
             Debug.LogError("Token Failed: " + error);
-        }
-    }
-
-    // Java의 PreLoginResultListener 구현
-    private class PreLoginResultListener : AndroidJavaProxy
-    {
-        public PreLoginResultListener() : base("com.aliyun.phone.PreLoginResultListener") { }
-
-        public void onTokenSuccess(string result)
-        {
-            Debug.Log("PreLogin Success: " + result);
-        }
-
-        public void onTokenFailed(string code, string message)
-        {
-            Debug.LogError($"PreLogin Failed: {code}, {message}");
         }
     }
 }
